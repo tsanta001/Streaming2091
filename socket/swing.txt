@@ -1,0 +1,121 @@
+this.getContentPane();
+	.getJMenuBarre();
+
+
+//--------------------FLOWLAYOUT------------------------------------------------
+Jpanel contentpane =(JPanel)this.contentpane();
+
+	contentpane.setLayout
+		(new FlowLayout(MARGINE :FlowLayout.Left, MARGE: 100, MARGE:100));
+
+		JTextField txt =new JTextField();
+			txt.setPreferredSize(new Dimension(MARGEx:120,MARGEy:20);
+			contentpane.add(JTextField());
+
+		Jbutton btn =new Jbutton();
+			contentpane.add(Jbutton());
+
+
+
+//---------------------GRIDLAYOUT-----------------------------------------------
+Jpanel contentpane =(JPanel)this.contentpane();
+
+	contentpane.setLayout
+		(new GridLayout(LIGNE:2,COLONE:2,MARGE:50,MARGE:50));
+
+		JTextField txt =new JTextField();
+			contentpane.add(JTextField());
+
+		Jbutton btn =new Jbutton();
+			contentpane.add(Jbutton());
+
+
+
+//---------------------BORDERLAYOUT-----------------------------------------------
+Jpanel contentpane =(JPanel)this.contentpane();
+
+	contentpane.setLayout
+		(new BorderLayout());
+
+		JTextField txt =new JTextField();
+			contentpane.add(txt, BorderLayout.NORTH);
+
+		Jbutton btn =new Jbutton();
+			contentpane.add(btn, BorderLayout.SOUTH);
+
+		JChecBox chb =new JChecBox();
+			contentpane.add(chb, BorderLayout.SOUTH);
+
+
+
+//---------------------MULTILAYOUT-----------------------------------------------
+Jpanel contentpane =(JPanel)this.contentpane();
+
+	contentpane.setLayout
+		(new BorderLayout());
+
+		contentpane.add(  //(2) createTLB( ) ,BorderLayout.NORTH );
+		contentpane.add(  //(4) createSTATUT( ),EAST );
+
+		JScrollPane scrl =new JScrollePane(new JTree());
+			scrl.setPreferredSize(new Dimension(MARGEx: 200,MARGEy: 0))
+			contentpane.add(scrl, BorderLayout.WEST);
+
+				JChecBox chb =new JChecBox();
+			contentpane.add(chb, BorderLayout.SOUTH); 
+
+		Jbutton btn =new Jbutton();
+			contentpane.add(btn);
+
+
+
+
+
+
+//(1)
+private JToolBar createTLB( ){
+	JToolBar tlb =new JToolBar();
+
+
+	Jbutton btn =new Jbutton();
+		tlb.add(btn);
+
+	JTextField txt =new JTextField();
+		tlb.add(txt);
+
+
+return tlb;
+}
+
+
+
+//(2)
+//le JPanel est un conteneur simple
+
+private JPanel createSTATUT( ){
+	JPanel panel =new JPanel();
+		panel.setLayout(new FlowLayout);
+
+			OU
+
+	JPanel panel =new JPanel(new FlowLayout());
+
+
+	JLabel lbl =new JLabel("Coucou");
+		lbl.setPreferredSize(new Dimension(50,30));
+		panel.add(lbl);
+
+	
+
+
+return tlb;
+}
+
+
+
+
+//----------------------------------------------------------
+//Main(){
+UIManager.setLookAndFeel(new NimbusLookAndFell());
+
+}
