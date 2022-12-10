@@ -9,89 +9,164 @@ import java.io.ObjectOutputStream;
 import java.lang.ClassNotFoundException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import javazoom.jl.player.Player;
+
+import listener.*;
 
 public class Server{
     private static ServerSocket server;  
     private static int port = 9876;//(1)
-    private static File music = new File("E:/Code NAINA/SOCKET PROJET/hira");
+
+    private static String pathName= System.getProperty("user.dir");
+    private static String path= pathName.replace("\\","/");
+    private static String pathMusic= path +"/hira";
+    private static String pathPhoto= path +"/photo";
+
+    private static File music = new File(pathMusic);
     private static File[] listeMusic= music.listFiles();
     private static int nbrAudio= listeMusic.length;
-    private static String musicName=new String();
-    private static Player player;
-    
-    //-------------------FONCCTION-----------------------------
-    public static void play(File mp3){
-        try {
-            FileInputStream fis =new FileInputStream(mp3);
-            BufferedInputStream bis= new BufferedInputStream(fis);
-                player=new Player(bis);
+    private static String musicName = new String();
 
-        } catch (Exception e) {
-        }
-        
-
-            new Thread(){ //GESTION PARAMETRE
-                @Override
-                public void run(){
-                    try {
-                        player.play();
-
-                    } catch (Exception e) {
-                    }
-                }
-            }.start();
-    }
-
-    public static void stop(){
-        if(player!=null){player.close();}
-    }
-
-//--------------------------------------------------------------------
+    private static File photo = new File(pathPhoto);
+    private static File[] listePhoto= photo.listFiles();
+    private static int nbrPhoto= listePhoto.length;
+    private static String photoName = new String();
 
     public static void main(String args[]) throws IOException, ClassNotFoundException{
+        server = new ServerSocket(port);
 
-        server = new ServerSocket(port);//(2)
-
-       //server>socket>ois.read()>message
-
-        while(true){//(3)
+        while(true){
             System.out.println("Waiting for the client request");
-           
-            Socket socket = server.accept();//(4)
 
-            
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());//(5) // OBJ MIDITRA AO AM SERVEUR 
-            
-            String message = (String) ois.readObject();//(6)
-            System.out.println("Message Received: " + message);
+            Socket socket = server.accept();
 
-            //server>socket>oos.write()
+            //--------------------------------------------------------------------------------------
 
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            String message = (String) ois.readObject();
+           // System.out.println("Message received:" + message);
 
+            //---------------------------------------------------------------------------------------
 
-     //-------------------------------------------------------------------------------------------
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 
-
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());//(7)
-            if(message.equals("Tsanta")){
-                for(int i=0; i<nbrAudio; i++){
-                    musicName = musicName + "/" + listeMusic[i].getName();
+            //----------------------------------------------------------------
+        
+                if(message.equalsIgnoreCase("music")){
+                    musicName = new String();
+                    for(int i=0; i<nbrAudio; i++){
+                        try{
+                            musicName = musicName + "/" + listeMusic[i].getName();
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    System.out.println(musicName);
+                    oos.writeObject(musicName);
                 }
-                oos.writeObject(musicName);//(8)
-            }else{
-                play(listeMusic[0]);
+
+            for(int i=0; i<nbrAudio;i++){
+                if(message.equalsIgnoreCase("music"+i)){
+                    musicName = new String();
+                        try{
+                            musicName = listeMusic[i].getPath();
+                        }catch(Exception e){
+                        System.out.println(e.getMessage());
+                        }
+                    System.out.println(musicName);
+                    oos.writeObject(musicName);
+                }
             }
-            ois.close();//(9)
+            //------------------------------------------------------------------
+            if(message.equalsIgnoreCase("photo")){
+                photoName = new String();
+                for(int i=0; i<nbrPhoto; i++){
+                    try{
+                        photoName = photoName + "/" + listePhoto[i].getName();
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                System.out.println(photoName);
+                oos.writeObject(photoName);
+            }
+
+
+            for(int i=0; i<nbrPhoto;i++){
+                if(message.equalsIgnoreCase("photo"+i)){
+                    photoName = new String();
+                        try{
+                            photoName = listePhoto[i].getPath();
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                    System.out.println(photoName);
+                    oos.writeObject(photoName);
+                }
+            }
+
+            if(message.equalsIgnoreCase("retourPhoto")){
+                photoName = new String();
+                for(int i=0; i<nbrPhoto; i++){
+                    try{
+                        photoName = photoName + "/" + listePhoto[i].getName();
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                System.out.println(photoName);
+                oos.writeObject(photoName);
+            }
+
+            if(message.equalsIgnoreCase("retourFenPhoto")){
+                photoName = new String();
+                for(int i=0; i<nbrPhoto; i++){
+                    try{
+                        photoName = photoName + "/" + listePhoto[i].getName();
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                System.out.println(photoName);
+                oos.writeObject(photoName);
+            }
+
+            if(message.equalsIgnoreCase("retourFenMusic")){
+                musicName = new String();
+                    for(int i=0; i<nbrAudio; i++){
+                        try{
+                            musicName = musicName + "/" + listeMusic[i].getName();
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    System.out.println(musicName);
+                    oos.writeObject(musicName);
+            }
+
+            if(message.equalsIgnoreCase("retourMusic")){
+                musicName = new String();
+                    for(int i=0; i<nbrAudio; i++){
+                        try{
+                            musicName = musicName + "/" + listeMusic[i].getName();
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    System.out.println(musicName);
+                    oos.writeObject(musicName);
+            }
+
+            ois.close();
             oos.close();
             socket.close();
-           
-           if(message.equalsIgnoreCase("exit")) break;//(10)
+
+            if(message.equalsIgnoreCase("exit")) break;
         }
-        System.out.println("Shutting down Socket server!!");
-        server.close();//(11)
+        System.out.println("Shutting down Socket server!");
+        server.close();
     }
 }
+
 
 //(1)port du serveur de socket sur lequel il écoutera
 //(2)  //créer l'objet serveur de socket
